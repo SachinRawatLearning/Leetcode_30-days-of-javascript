@@ -66,16 +66,47 @@
 // 2 <= JSON.stringify(arr2).length <= 106
 
 var join = function (arr1, arr2) {
-  const resultArray = [];
-  arr1.forEach((ele1) => {
-    arr2.forEach((ele2) => {
-      if (ele2[ele1.id]) {
-      }
-    });
+  const combinedArray = arr1.concat(arr2);
+  const merged = {};
+
+  combinedArray.forEach((obj) => {
+    const id = obj.id;
+    if (!merged[id]) {
+      merged[id] = obj;
+    } else {
+      merged[id] = { ...merged[id], ...obj };
+    }
   });
+
+  const sortedArray = Object.values(merged);
+  sortedArray.sort((a, b) => a.id - b.id);
+
+  return sortedArray;
 };
+
+console.log(
+  join(
+    [{ id: 1, b: { b: 94 }, v: [4, 3], y: 48 }],
+    [{ id: 1, b: { c: 84 }, v: [1, 3] }]
+  )
+);
+
+// console.log(
+//   join(
+//     (arr1 = [
+//       { id: 1, x: 2, y: 3 },
+//       { id: 2, x: 3, y: 6 },
+//     ]),
+//     (arr2 = [
+//       { id: 2, x: 10, y: 20 },
+//       { id: 3, x: 0, y: 0 },
+//     ])
+//   )
+// );
 
 // join(
 //   [{ id: 1, b: { b: 94 }, v: [4, 3], y: 48 }],
 //   [{ id: 1, b: { c: 84 }, v: [1, 3] }]
 // );
+
+// The time complexity is O(nlogn) due to the sort function
