@@ -1,3 +1,3 @@
-30 Days of Leetcode Practice.
+30 Days of Javascript from Leetcode.
 
 Practicing DSA with Javascript :)
