@@ -30,26 +30,28 @@
  * @return {Object|Array}
  */
 var compactObject = function (obj) {
-  let res = [];
-  const helper = (obj) => {
-    if (obj === null) return;
-    if (Array.isArray(obj) && !obj.length) return [];
-    if (!Object.keys(obj).length) return [];
-
-    console.log(obj);
-
+  if (obj === null || obj === undefined) return null;
+  if (Array.isArray(obj)) {
+    let res = [];
     for (let item of obj) {
-      console.log(item);
-      if (typeof item === "object" && item !== null) {
-        console.log(helper(item));
-        res.push([...helper(item)]);
-      } else if (item) res.push(item);
+      let compactedItem = compactObject(item);
+      if (compactedItem !== null) res.push(compactedItem);
     }
-  };
-  helper(obj);
-  return res;
+    return res;
+  } else if (typeof obj === "object") {
+    let res = {};
+    for (let key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        let compactedItem = compactObject(obj[key]);
+        if (compactedItem !== null) res[key] = compactedItem;
+      }
+    }
+    return res;
+  } else {
+    return obj ? obj : null;
+  }
 };
 
-// console.log(compactObject([null, 0, false, 1]));
-console.log(compactObject([null, 0, 5, [0], [false, 16]]));
-// console.log(compactObject({ a: null, b: [false, 1] }));
+console.log(compactObject([null, 0, false, 1])); // [ 1 ]
+console.log(compactObject([null, 0, 5, [0], [false, 16]])); // [5, [], [16]]
+console.log(compactObject({ a: null, b: [false, 1] })); // { b: [ 1 ] }
