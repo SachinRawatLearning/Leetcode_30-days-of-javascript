@@ -29,7 +29,7 @@
  * @param {Object|Array} obj
  * @return {Object|Array}
  */
-var compactObject = function (obj) {
+const compactObject = function (obj) {
   if (obj === null || obj === undefined) return null;
   if (Array.isArray(obj)) {
     let res = [];
@@ -48,7 +48,7 @@ var compactObject = function (obj) {
     }
     return res;
   } else {
-    return obj ? obj : null;
+    return obj || null;
   }
 };
 

@@ -45,7 +45,7 @@
 // -1000 <= each number <= 1000
 // 0 <= n <= 1000
 
-var flat = function (arr, n) {
+const flat = function (arr, n) {
   let result = [...arr];
   let tempArr;
   let counter = 0;
