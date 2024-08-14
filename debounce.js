@@ -72,23 +72,14 @@
  * @return {Function}
  */
 
-let timer = 0;
-let prevTimer = 0;
 var debounce = function (fn, t) {
-  console.log(t);
-  if (t <= timer && t - prevTimer >= timer && timer) {
+  let timer;
+  return function (...args) {
     clearTimeout(timer);
-    prevTimer = t;
-  }
-  if (!timer) {
-    (timer = setTimeout(() => {
-      return function (...args) {
-        fn(args);
-      };
-    })),
-      t + timer;
-  }
+    timer = setTimeout(() => fn(...args), t);
+  };
 };
+
 /**
  * const log = debounce(console.log, 100);
  * log('Hello'); // cancelled
