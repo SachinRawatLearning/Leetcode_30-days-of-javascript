@@ -47,7 +47,39 @@
  * @param {Array<Function>} functions
  * @return {Promise<any>}
  */
-var promiseAll = function (functions) {};
+/**
+ * @param {Array<Function>} functions
+ * @return {Promise<any>}
+ */
+var promiseAll = async function (functions) {
+  return new Promise((resolve, reject) => {
+    if (functions.length === 0) {
+      resolve([]);
+      return;
+    }
+
+    const resultArr = [];
+    let count = 0;
+
+    functions.forEach(async (func, index) => {
+      try {
+        const result = await func();
+        resultArr[index] = result;
+        count++;
+
+        if (count === functions.length) resolve(resultArr);
+      } catch (err) {
+        console.log(err);
+        reject(err);
+      }
+    });
+  });
+};
+
+/**
+ * const promise = promiseAll([() => new Promise(res => res(42))])
+ * promise.then(console.log); // [42]
+ */
 
 /**
  * const promise = promiseAll([() => new Promise(res => res(42))])
