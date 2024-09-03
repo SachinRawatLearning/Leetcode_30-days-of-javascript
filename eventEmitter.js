@@ -68,14 +68,29 @@
 // The unsubscribe action takes one argument, which is the 0-indexed order of the subscription made before.
 
 class EventEmitter {
+  constructor() {
+    this.callbackList = {};
+  }
   /**
    * @param {string} eventName
    * @param {Function} callback
    * @return {Object}
    */
   subscribe(eventName, callback) {
+    if (!this.callbackList[eventName]) this.callbackList[eventName] = [];
+
+    const eventListener = { callback };
+    this.callbackList[eventName].push(eventListener);
+
     return {
-      unsubscribe: () => {},
+      unsubscribe: () => {
+        const removedEleIndex =
+          this.callbackList[eventName].indexOf(eventListener);
+        if (removedEleIndex !== -1) {
+          this.callbackList[eventName].splice(removedEleIndex, 1);
+          return undefined;
+        }
+      },
     };
   }
 
@@ -84,7 +99,12 @@ class EventEmitter {
    * @param {Array} args
    * @return {Array}
    */
-  emit(eventName, args = []) {}
+  emit(eventName, args = []) {
+    if (!this.callbackList[eventName]) return [];
+    const output = [];
+
+    return this.callbackList[eventName].map((ele) => ele.callback(...args));
+  }
 }
 
 /**
